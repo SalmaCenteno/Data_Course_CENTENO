@@ -1,0 +1,25 @@
+Final Project Idea: Mapping DNA Structural Variation in Dogs
+Student Name: Salma Centeno
+
+1. Project Idea:
+I will explore the distribution of DNA Copy Number Variations (CNVs) across different dog 
+breeds. Based on the 2009 study by Chen et al., I want to analyze how structural 
+variants (insertions, deletions, duplications) cluster by breed class (e.g., Hounds 
+vs. Terriers) and identify variations that might be linked to breed-specific 
+diseases like lymphoma.
+
+2. Data Description:
+The data comes from Array Comparative Genomic Hybridization (aCGH) which identifies 
+regions of the genome where the DNA count differs from a reference sample. 
+
+3. Potential Sources & Structure:
+Source: Genome Research (Chen et al., 2009) / NCBI GEO database.
+The data structure includes:
+- Breed: The specific dog breed (e.g., Boxer, Beagle).
+- Chromosome: The genomic location of the variant.
+- CNV_Type: Whether the segment is a 'Gain' (duplication) or 'Loss' (deletion).
+- Size_kb: The length of the structural variation in kilobases.
+- Breed_Class: The functional grouping of the breed (Working, Toy, Herding, etc.).
+
+Reference:
+(2014). Mapping DNA structural variation in dogs [Dataset]. https://datamed.org/display-item.php?repository=0006&idName=ID&id=5913bdc85152c62a9fc250ba
