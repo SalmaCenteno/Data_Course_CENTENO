@@ -53,3 +53,26 @@ df %>% ggplot(aes(x=Last_Update,y=Active)) +
   facet_wrap(~Province_State,scales = "free")
 
 df %>% glimpse
+
+df <- read_csv("data/cleaned_covid_data.csv")
+
+A_states <- df %>%
+  filter(str_starts(Province_State, "A"))
+
+glimpse(A_states)
+
+ggplot(A_states, aes(x = Last_Update, y = Deaths)) +
+  geom_line() +
+  facet_wrap(~ Province_State, scales = "free") +
+  theme_minimal()
+
+state_max_fatality_rate <- df %>%
+  group_by(Province_State) %>%
+  summarise(max_fatality = max(Case_Fatality_Ratio, na.rm = TRUE))
+
+ggplot(state_max_fatality_rate,
+       aes(x = reorder(Province_State, max_fatality),
+           y = max_fatality)) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal()
