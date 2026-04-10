@@ -1,0 +1,15 @@
+#1.  Are any of your predicted response values from your best model scientifically meaningless? Explain.
+
+#Yes, some expected values may have little scientific significance. For instance, the model may forecast growth rates that are very high, which are unrealistic for the growth of mushrooms. This occurs as a result of linear models' ability to extrapolate because make predictions outside the range of the observable data . These predictions would not make biological sense because growth in genuine biological systems often has natural limitations.
+
+
+
+#2.  In your plots, did you find any non-linear relationships?  Do a bit of research online and give a link to at least one resource explaining how to deal with modeling non-linear relationships in R.
+
+#Yes, some of the correlations between variables, such as light and temperature, might seem non-linear, meaning they don't follow a straight line. 
+#https://www.datacamp.com/tutorial/introduction-to-non-linear-model-and-insights-using-r
+
+#3.  Write the code you would use to model the data found in "/Data/non_linear_relationship.csv" with a linear model (there are a few ways of doing this)
+
+data <- read.csv("Data/non_linear_relationship.csv")
+model1 <- lm(response ~ poly(predictor, 2), data = data)
