@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/1421652/fc3b2654a86844c68a47906d8406c833
+bundleId: https://api.rpubs.com/api/v1/document/1421652/fc3b2654a86844c68a47906d8406c833
+url: http://rpubs.com/salmac/1421652
+version: 1

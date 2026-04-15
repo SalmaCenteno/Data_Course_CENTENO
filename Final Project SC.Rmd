@@ -1,0 +1,118 @@
+---
+title: "What Makes a Pet More Adoptable? A Data-Driven Analysis of Adoption Likelihood"
+author: "Salma Centeno"
+date: "2026-04-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+## Introduction
+
+Animal shelters aim to maximize adoption rates, but not all pets are adopted equally. Factors such as age and species may influence how likely an animal is to find a home.
+
+In this project, I analyze a dataset of pets to investigate which characteristics are associated with higher adoption likelihood. By identifying these patterns, this analysis can provide insights that may help improve adoption strategies in shelters.
+
+<div style="text-align: center;">
+  <img src="animal.jpg" width="500">
+</div>
+
+*Figure 1. Animals in a shelter environment.*
+
+## Background
+
+Animal adoption is an important issue for shelters, as many animals remain unadopted each year. Understanding the factors that influence adoption likelihood can help improve outcomes and reduce overcrowding.
+
+Previous research and general trends suggest that adopters often prefer younger animals and certain pet types. However, data-driven analysis is necessary to confirm these patterns and better understand how different variables impact adoption rates.
+
+This project uses real data to explore these relationships and provide insights into what makes a pet more likely to be adopted.
+
+## Data
+The dataset contains information on pet characteristics such as age, type, and adoption likelihood.
+```{r setup2}
+library(dplyr)
+library(ggplot2)
+
+data <- read.csv("Data SC/pet_adoption_data.csv")
+knitr::kable(head(data))
+```
+
+## Compare adoption likelihood across pet types
+```{r}
+data %>%
+  group_by(PetType) %>%
+  summarise(avg_adoption = mean(AdoptionLikelihood, na.rm = TRUE))
+```
+
+```{r}
+ggplot(data, aes(x = AgeMonths, y = AdoptionLikelihood)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(color = "red", se = TRUE) +
+  labs(
+    title = "Younger Pets Are More Likely to Be Adopted",
+    subtitle = "Adoption likelihood decreases as age increases",
+    x = "Age (Months)",
+    y = "Adoption Likelihood"
+  ) +
+  theme_minimal()
+```
+
+This visualization shows a clear negative relationship between age and adoption likelihood. Younger pets tend to have a higher probability of adoption, while older pets are less likely to be adopted. This pattern may reflect adopter preferences for younger animals, which could have important implications for shelter strategies.
+
+```{r}
+ggplot(data, aes(x = PetType, y = AdoptionLikelihood, fill = PetType)) +
+  geom_boxplot() +
+  labs(
+    title = "Adoption Likelihood Varies by Pet Type",
+    x = "Pet Type",
+    y = "Adoption Likelihood"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+The bar graph displays the average adoption likelihood for each pet type. The results show minimal variation across all categories, indicating that birds, cats, dogs, and rabbits have similar adoption likelihoods. This suggests that pet type may not be a strong predictor of adoption in this dataset, and other factors, such as age, may play a more important role.
+
+  
+## Statistic model
+A linear regression model was used to evaluate whether age predicts adoption likelihood.
+
+```{r}
+model <- lm(AdoptionLikelihood ~ AgeMonths, data = data)
+summary(model)
+```
+The regression results show a statistically significant negative relationship between age and adoption likelihood (p < 0.001). This indicates that as age increases, the likelihood of adoption decreases. However, the R-squared value is relatively low, suggesting that age alone does not fully explain adoption outcomes and that other factors may also play an important role.
+
+## Correlation Analysis
+```{r}
+library(GGally)
+
+data %>%
+  select(AgeMonths, AdoptionLikelihood) %>%
+  ggpairs()
+```
+
+This correlation plot shows a negative relationship between age and adoption likelihood, with a correlation of approximately -0.20. This indicates that as age increases, adoption likelihood tends to decrease. Although the relationship is not extremely strong, it is consistent with the trends observed in previous visualizations.
+
+## Discussion
+
+While this analysis identifies important trends, there are limitations. The dataset does not include factors such as breed, health status, or shelter conditions, which may also influence adoption likelihood.
+
+Future analyses could incorporate additional variables or apply more advanced models to better understand adoption behavior.
+
+## Conclusion
+
+This project demonstrates that pet age and type play an important role in adoption likelihood. Younger pets are more likely to be adopted, highlighting a potential challenge for shelters in placing older animals.
+
+These findings provide useful insights that could help improve adoption strategies and increase overall adoption rates.
+
+Additionally, this project strengthened skills in data visualization, statistical modeling, and data analysis using R.
+
+These findings highlight the importance of data-driven decision-making in improving animal adoption outcomes.
+
+<style>
+h2 {
+  color: darkgreen;
+}
+</style>

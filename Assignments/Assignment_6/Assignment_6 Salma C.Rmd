@@ -88,7 +88,6 @@ dat_long <- dat %>%
   pivot_longer(cols = starts_with("hr_"), 
                names_to = "time", 
                values_to = "absorbance") %>% 
-  # Converts "hr_24" into the number 24
   mutate(time = as.numeric(str_remove(time, "hr_")))
   
   
