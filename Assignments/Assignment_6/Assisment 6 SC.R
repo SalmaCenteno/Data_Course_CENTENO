@@ -1,0 +1,65 @@
+install.packages("janitor")
+
+library(tidyverse)
+library(gganimate)
+library(janitor)
+
+dat <- read_csv("BioLog_Plate_Data.csv") %>% 
+  clean_names()
+
+
+dat_long <- dat %>% 
+  pivot_longer(cols = starts_with("hr_"), 
+               names_to = "time", 
+               values_to = "absorbance") %>% 
+  # Converts "hr_24" into the number 24
+  mutate(time = as.numeric(str_remove(time, "hr_")))
+
+
+dat_long <- dat_long %>% 
+  mutate(type = case_when(
+    sample_id %in% c("Clear_Creek", "Waste_Water") ~ "Water",
+    TRUE ~ "Soil"
+  ))
+
+
+plot1_data <- dat_long %>% filter(dilution == 0.1)
+
+ggplot(plot1_data, aes(x = time, y = absorbance, color = type)) +
+  geom_smooth(method = "loess", se = FALSE, span = 0.5) + 
+  facet_wrap(~substrate) +
+  theme_minimal() +
+  labs(title = "Substrate Utilization (Dilution 0.1)",
+       subtitle = "Data Analysis by Salma Centeno",
+       x = "Time (Hours)",
+       y = "Absorbance",
+       color = "Sample Type")
+
+
+
+unique(dat_long$substrate)
+
+
+anim_data <- dat_long %>% 
+  filter(grepl("itaconic", substrate, ignore.case = TRUE)) %>% 
+  group_by(sample_id, time, dilution, type) %>% 
+  summarise(mean_absorbance = mean(absorbance, na.rm = TRUE), .groups = "drop")
+
+
+nrow(anim_data)
+
+
+
+itaconic_anim <- ggplot(anim_data, aes(x = time, y = mean_absorbance, color = sample_id)) +
+  geom_line() +
+  facet_wrap(~dilution) +
+  transition_reveal(time) + 
+  theme_minimal() +
+  labs(title = "Itaconic Acid Utilization Over Time",
+       subtitle = "Time: {frame_along} Hours",
+       caption = "Analyzed by Salma Centeno",
+       y = "Mean Absorbance",
+       x = "Time (Hours)")
+
+
+animate(itaconic_anim, nframes = 50, fps = 10)
