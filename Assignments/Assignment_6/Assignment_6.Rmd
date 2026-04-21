@@ -80,7 +80,7 @@ library(tidyverse)
 library(gganimate)
 library(janitor)
 
-dat <- read_csv("Data/BioLog_Plate_Data.csv") %>% 
+dat <- read_csv("BioLog_Plate_Data.csv") %>% 
   clean_names()
 
 

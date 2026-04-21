@@ -31,7 +31,7 @@ This project uses real data to explore these relationships and provide insights 
 
 ## Data
 The dataset contains information on pet characteristics such as age, type, and adoption likelihood.
-```{r setup2}
+```{r echo=FALSE}
 library(dplyr)
 library(ggplot2)
 
@@ -40,13 +40,13 @@ knitr::kable(head(data))
 ```
 
 ## Compare adoption likelihood across pet types
-```{r}
+```{r echo=FALSE}
 data %>%
   group_by(PetType) %>%
   summarise(avg_adoption = mean(AdoptionLikelihood, na.rm = TRUE))
 ```
 
-```{r}
+```{r echo=FALSE}
 ggplot(data, aes(x = AgeMonths, y = AdoptionLikelihood)) +
   geom_point(alpha = 0.6) +
   geom_smooth(color = "red", se = TRUE) +
@@ -61,13 +61,17 @@ ggplot(data, aes(x = AgeMonths, y = AdoptionLikelihood)) +
 
 This visualization shows a clear negative relationship between age and adoption likelihood. Younger pets tend to have a higher probability of adoption, while older pets are less likely to be adopted. This pattern may reflect adopter preferences for younger animals, which could have important implications for shelter strategies.
 
-```{r}
-ggplot(data, aes(x = PetType, y = AdoptionLikelihood, fill = PetType)) +
-  geom_boxplot() +
+```{r echo=FALSE}
+summary_data <- data %>%
+  group_by(PetType) %>%
+  summarise(avg_adoption = mean(AdoptionLikelihood, na.rm = TRUE))
+
+ggplot(summary_data, aes(x = PetType, y = avg_adoption, fill = PetType)) +
+  geom_bar(stat = "identity") +
   labs(
-    title = "Adoption Likelihood Varies by Pet Type",
+    title = "Average Adoption Likelihood by Pet Type",
     x = "Pet Type",
-    y = "Adoption Likelihood"
+    y = "Average Adoption Likelihood"
   ) +
   theme_minimal() +
   theme(legend.position = "none")
@@ -78,19 +82,23 @@ The bar graph displays the average adoption likelihood for each pet type. The re
 ## Statistic model
 A linear regression model was used to evaluate whether age predicts adoption likelihood.
 
-```{r}
+```{r echo=FALSE}
 model <- lm(AdoptionLikelihood ~ AgeMonths, data = data)
 summary(model)
 ```
 The regression results show a statistically significant negative relationship between age and adoption likelihood (p < 0.001). This indicates that as age increases, the likelihood of adoption decreases. However, the R-squared value is relatively low, suggesting that age alone does not fully explain adoption outcomes and that other factors may also play an important role.
 
 ## Correlation Analysis
-```{r}
+```{r echo=FALSE}
 library(GGally)
+summary_data <- data %>%
+  group_by(PetType) %>%
+  summarise(avg_adoption = mean(AdoptionLikelihood, na.rm = TRUE))
 
 data %>%
   select(AgeMonths, AdoptionLikelihood) %>%
   ggpairs()
+
 ```
 
 This correlation plot shows a negative relationship between age and adoption likelihood, with a correlation of approximately -0.20. This indicates that as age increases, adoption likelihood tends to decrease. Although the relationship is not extremely strong, it is consistent with the trends observed in previous visualizations.
