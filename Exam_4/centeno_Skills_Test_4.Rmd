@@ -1,10 +1,10 @@
 ---
-title: "Skill Test 3"
+title: "Skill Test 30"
 author: "Salma Centeno"
 date: "2026-04-15"
 output: html_document
 ---
-
+I'm doing again Exam 3 
 ```{r setup}
 library(tidyverse)
 library(broom)
